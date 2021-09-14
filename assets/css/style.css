@@ -1,0 +1,22 @@
+.night {
+    color: antiquewhite;
+}
+
+.card-body{
+    padding: 0px;
+}
+.rain{
+    background-color: blue;
+    height: auto;
+    padding: 5px 0px 0px 0px;
+    color: antiquewhite;
+}
+
+.day{
+    background-color: skyblue;
+}
+
+.night{
+    background-color: slategrey;
+    color: snow;
+}
