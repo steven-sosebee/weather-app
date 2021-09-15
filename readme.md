@@ -2,6 +2,10 @@
 
 This app allows the user to look up a major city and find the weather for the upcoming week.  Use this app to plan your travels.
 
+[GitHub code](https://github.com/steven-sosebee/weather-app)
+
+[Deployed version](https://steven-sosebee.github.io/weather-app/)
+
 ## Features:
 
 - City search: look-up any major city using the text box
@@ -11,4 +15,6 @@ This app allows the user to look up a major city and find the weather for the up
 ## Data sources:
 
 The app uses the One Call API and the Openweather API 
+
+
 
