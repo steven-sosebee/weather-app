@@ -30,6 +30,11 @@ var priorSearchBtn = $("ul #prior-city");
 //     element.getElementsByClassName("high")[0].innerHTML =Math.round(data.daily[i].temp.day);
 // };
 
+function capitalize(word) {
+    return word.replace(/\b[a-z]/g, function(capLetter) {
+        return capLetter.toUpperCase();
+    });
+};
 function addCurrent() {
     $(".current-day").remove();
     $("column").prepend(
@@ -93,7 +98,8 @@ function addDay(int) {
     </day>")
 }
 
-function getData(city, state) {
+function getData(city) {
+    city = city.toLowerCase();
     var apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=58770277917bab6f2c2cefdcd33dfcbf"
     console.log(apiURL);
     fetch(apiURL)
@@ -101,7 +107,7 @@ function getData(city, state) {
     .then(function (response) {
         return response.json();
     })
-    .then(function (data) {
+        .then(function (data) {
         console.log(data);        
         fetch("https://api.openweathermap.org/data/2.5/onecall?" + "lat=" +
             data.coord.lat + "&lon=" + data.coord.lon + "&&units=imperial&appid=58770277917bab6f2c2cefdcd33dfcbf")
@@ -117,8 +123,8 @@ function getData(city, state) {
                 $("#current-UV").text(data.current.uvi);
                 $("#current-icon").attr("src","http://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png");
                 $("#current-wind").text(data.current.wind_speed);
-                $("#current-rain").text(data.daily[0].pop *100);
-                $("#current-date").text(moment.unix(data.current.dt).format("ddd, MMM DD, YYY"));
+                $("#current-rain").text(Math.round(data.daily[0].pop *100));
+                $("#current-date").text(moment.unix(data.current.dt).format("dddd MMM DD, YYYY"));
                 $("#UV-icon").addClass(UV(data.current.uvi));
                 // select the dynamically created date cards and populate them
                 var dateCards = $(document.querySelectorAll("day"));
@@ -165,7 +171,8 @@ function init() {
     if (storedSearches) {
         priorSearches = storedSearches;
         for (var i = 0; i < priorSearches.length; i++){
-            $("ul").append($("<button class='city-name text-center my-1 w-100 btn btn-secondary' id='prior-city'>").text(priorSearches[i]));
+            var capCity = capitalize(priorSearches[i]);
+            $("ul").append($("<button class='city-name text-center my-1 w-100 btn btn-secondary' id='prior-city'>").text(capCity));
         }
     } else {
         priorSearches = [];
