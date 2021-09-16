@@ -16,5 +16,5 @@ This app allows the user to look up a major city and find the weather for the up
 
 The app uses the One Call API and the Openweather API 
 
-
+![Demo](./assets/demo.gif)
 

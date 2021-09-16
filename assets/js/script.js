@@ -30,11 +30,14 @@ var priorSearchBtn = $("ul #prior-city");
 //     element.getElementsByClassName("high")[0].innerHTML =Math.round(data.daily[i].temp.day);
 // };
 
+// capitalizes the city for display
 function capitalize(word) {
     return word.replace(/\b[a-z]/g, function(capLetter) {
         return capLetter.toUpperCase();
     });
 };
+
+// dyanmically adds the current weather card to the page
 function addCurrent() {
     $(".current-day").remove();
     $("column").prepend(
@@ -58,6 +61,7 @@ function addCurrent() {
             </div>");
 };
 
+// generates the color for the UV RAG
 function UV(UVi) {
     if (UVi > 8) {
         return "text-danger";
@@ -69,6 +73,8 @@ function UV(UVi) {
         };
     };
 };
+
+// dynamically adds day cards to the calendar
 function addDay(int) {
     $("calendar").append("<day class = ' card my-1 ' id='" + int + "'>\
         <div class= 'card-header bg-light'></div >\
@@ -98,8 +104,10 @@ function addDay(int) {
     </day>")
 }
 
+// calls the API
+
 function getData(city) {
-    city = city.toLowerCase();
+   
     var apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=58770277917bab6f2c2cefdcd33dfcbf"
     console.log(apiURL);
     fetch(apiURL)
@@ -142,6 +150,7 @@ function getData(city) {
                     // element.getElementsByClassName("rain")[0].style.width = data.daily[j].pop * 100 + "%";
                     element.getElementsByClassName("rain")[0].innerHTML = Math.round(data.daily[j].pop) * 100 + "%";
                 });
+                city = city.toLowerCase();
                 if (priorSearches.indexOf(city) === -1) {
                     priorSearches.push(city);
                     localStorage.setItem("WeatherSearches", JSON.stringify(priorSearches));
@@ -152,10 +161,7 @@ function getData(city) {
     })
 };
 
-function printData(data) {
-    console.log(data);
-}
-
+// event listener for the search input
 btnSearch.on("click", function (event) {
     var apiCity = $("#input-city").val().toLowerCase();
     $("day").remove();
@@ -166,6 +172,7 @@ btnSearch.on("click", function (event) {
     getData(apiCity);
 });
 
+// initializes the page
 function init() {
     var storedSearches = JSON.parse(localStorage.getItem("WeatherSearches"));
     if (storedSearches) {
@@ -181,6 +188,7 @@ function init() {
         source: priorSearches
     })
 }
+// event listener for the prior searches
 $("ul").on("click", "button", function (e) {
     e.stopPropagation();
     e.stopImmediatePropagation();
@@ -192,4 +200,5 @@ $("ul").on("click", "button", function (e) {
     var savedSearch = e.target;
     getData(savedSearch.textContent);
 });
+
 init();
