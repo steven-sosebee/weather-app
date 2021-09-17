@@ -47,10 +47,9 @@ function addCurrent() {
                     <row class='row'>\
                 <div class= 'col-sm d-flex-column container-fluid'>\
                             <h5 class='bold'>Current Temp: <span id='current-temp'></span></h5>\
-                            <div class='width-auto'>\
-                                <h5>UV Index: <span id='current-UV'></span></h5 >\
-                                <div class ='w-25 bg-dark' id='UV-icon'><i id='uvi' class='fas fa-signal'></i></div>\
-                            </div class='container'>\
+                            <div>\
+                                <h5 id ='UV'>UV Index: <span id='current-UV'></span> <i id='uvi' class='fas fa-signal'></i></h5 >\
+                            </div>\
                             <h5><span id='current-wind'></span> mph</h5>\
                             <h5><i class='fas fa-tint'></i> <span id='current-humidity'></span>%</h5>\
                             <h5><i class='fas fa-cloud-rain'></i> <span id='current-rain'></span>%</h5>\
@@ -64,12 +63,12 @@ function addCurrent() {
 // generates the color for the UV RAG
 function UV(UVi) {
     if (UVi > 8) {
-        return "text-danger";
+        return "bg-danger rounded text-white";
     } else {
         if (UVi > 3) {
-            return "text-warning";
+            return "bg-warning rounded";
         } else {
-            return "text-success";
+            return "bg-success rounded";
         };
     };
 };
@@ -86,7 +85,10 @@ function addDay(int) {
                 <div>High: <span class='high card-body p-1'></div>\
             </row>\
             <row class='card-body p-1'>\
-                <div>Humidity: <span class='humidity card-body p-1'></span></div>\
+                <div>Humidity: <span class='humidity'></span></div>\
+            </row>\
+            <row class='card-body p-1'>\
+                <div>Wind: <span class='wind'></span></div>\
             </row>\
             <row class='card-body p-1'>\
                 <div><i class='fas fa-cloud-rain'></i> <span class='rain'></span></div>\
@@ -96,10 +98,9 @@ function addDay(int) {
             <row class='card-body'>\
                 <div>Low: <span class='low'></span></div>\
             </row>\
-            <row class='card-body'><i class='fas fa-moon'></i>\
+            <row class='card-body text-left p-0'><i class='fas fa-moon'></i></row>\
             <div>Moon Rise: <span class='moonrise'></span></div>\
             <div>Moon Phase: <span class='moonphase'></span></div>\
-        </row>\
         </div>\
     </day>")
 }
@@ -133,7 +134,7 @@ function getData(city) {
                 $("#current-wind").text(data.current.wind_speed);
                 $("#current-rain").text(Math.round(data.daily[0].pop *100));
                 $("#current-date").text(moment.unix(data.current.dt).format("dddd MMM DD, YYYY"));
-                $("#UV-icon").addClass(UV(data.current.uvi));
+                $("#UV").addClass(UV(data.current.uvi));
                 // select the dynamically created date cards and populate them
                 var dateCards = $(document.querySelectorAll("day"));
                 dateCards.each(function (i, element) {
@@ -143,6 +144,7 @@ function getData(city) {
                     element.getElementsByClassName("high")[0].innerHTML = Math.round(data.daily[j].temp.day);
                     element.getElementsByClassName("low")[0].innerHTML = Math.round(data.daily[j].temp.night);
                     element.getElementsByClassName("moonphase")[0].innerHTML = data.daily[j].moon_phase;
+                    element.getElementsByClassName("wind")[0].innerHTML = data.daily[j].wind_speed + " mph";
                     element.getElementsByClassName("moonrise")[0].innerHTML = moment.unix(data.daily[j].moonrise).format("HH:MM");
                     element.getElementsByClassName("icon")[0].src = "http://openweathermap.org/img/wn/" + data.daily[j].weather[0].icon + "@2x.png";
                     element.getElementsByClassName("humidity")[0].innerHTML = Math.round(data.daily[j].humidity) +"%";
